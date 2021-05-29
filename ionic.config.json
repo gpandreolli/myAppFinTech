@@ -1,0 +1,7 @@
+{
+  "name": "myAppFinTech",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
