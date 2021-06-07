@@ -1,17 +1,65 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
+<ion-header class="header-teste">
+  <ion-toolbar >
+    <ion-title class="uk-tile-primary uk-margin-small-bottom">
+      FinTech app
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content  class="uk-container-expand-left"> 
+  <form [formGroup]="form">
+    <ion-grid>       
+        <ion-label>Valor</ion-label>            
+      <ion-row >  
+        <ion-input  formControlName="valor" class="uk-input- uk-width-1-1 " type="number" placeholder="R$ 100,00">
+        </ion-input>
+      </ion-row>
+      <ion-label>
+        Descrição
+      </ion-label>
+      <ion-row class="uk-margin-small-bottom">        
+        <ion-input formControlName="descricao"  type="text" placeholder="Mercado">
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+        </ion-input>
+      </ion-row>
+
+      <ion-label>   Data </ion-label>
+      <ion-row class="uk-margin-small-bottom "> 
+        <ion-item>
+          <ion-datetime [(ngModel)]="dataAtual" displayFormat="DD-MMM-YYYY" value="{{dataAtual}} " formControlName="data" (ionChange)="dateChanged($event)">{{dataAtual}}</ion-datetime>
+      </ion-item>
+      </ion-row>
+
+      <ion-label>
+        Categoria
+      </ion-label>
+      <ion-row  class="uk-margin-small-bottom">        
+        <ion-select    formControlName="categoriaId"  >
+          
+          <ion-select-option value="categoria.nome" class="uk-text-primary" *ngFor="let categoria of categorias$ | async" >{{categoria.nome}}</ion-select-option>
+        </ion-select>
+      </ion-row> 
+         
+      <ion-row class="uk-margin-small-bottom">
+          <ion-checkbox class="uk-margin-right" formControlName="tipoConta"></ion-checkbox> 
+          <label class="uk-margin-medium-left">Cartão de Crédito</label>        
+      </ion-row>
+      <ion-label>
+        Conta
+      </ion-label>
+      <ion-row  class="uk-margin-small-bottom">        
+        <ion-select  formControlName="contasId" class="custom-options" interface="popover">
+          <ion-select-option  value="conta" *ngFor="let conta of contas$ | async" >{{conta.nome}}</ion-select-option>
+        </ion-select>
+      </ion-row> 
+    </ion-grid>
+    <ion-row class="uk-margin-small-top">
+      
+      <ion-button class="uk-margin-small-left" uk-button >Cancelar</ion-button>
+      <ion-button class="uk-margin-small-left" uk-button (click)="submit()" >Salvar</ion-button>
+    </ion-row>
+    
+  </form>
+
 </ion-content>
+
