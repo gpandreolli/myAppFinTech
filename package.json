@@ -25,6 +25,7 @@
     "@capacitor/keyboard": "1.0.0",
     "@ionic-native/date-picker": "^5.33.1",
     "@ionic/angular": "^5.5.2",
+    "br-mask": "0.0.10",
     "cordova-plugin-datepicker": "^0.9.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

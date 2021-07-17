@@ -5,7 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
+
 import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { BrMaskerModule } from 'br-mask';
 
 @NgModule({
   imports: [
@@ -13,7 +15,8 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    Tab1PageRoutingModule,ReactiveFormsModule
+    Tab1PageRoutingModule,ReactiveFormsModule,
+    BrMaskerModule
   ],
   declarations: [Tab1Page]
 })

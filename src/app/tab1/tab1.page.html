@@ -1,17 +1,44 @@
-<ion-header class="header-teste">
+
+  <ion-radio-group *ngIf="tipoRegistro ===0" value="tipoRegistro" (ionChange)="onTipoRegistro($event)">
+    <ion-row>
+      <ion-col>
+    <ion-item>
+      <ion-label>Despesa</ion-label>
+      <ion-radio slot="start" value="Despesa"></ion-radio>
+    </ion-item>
+    </ion-col>
+    <ion-col>
+    <ion-item>
+      <ion-label>Receita</ion-label>
+      <ion-radio slot="end" value="Receita"></ion-radio>
+    </ion-item>
+  </ion-col>
+  </ion-row>
+  </ion-radio-group>
+
+
+<ion-header *ngIf="tipoRegistro === 1" class="header-teste">
   <ion-toolbar >
-    <ion-title class="uk-tile-primary uk-margin-small-bottom">
-      FinTech app
+    <ion-title class="uk-margin-small-bottom fin-header-depesa">
+      Despesas
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content  class="uk-container-expand-left"> 
+<ion-header *ngIf="tipoRegistro===2" class="header-teste">
+  <ion-toolbar >
+    <ion-title class="uk-tile-primary uk-margin-small-bottom">
+      Receitas
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="tipoRegistro !== 0" class="uk-container-expand-left"> 
   <form [formGroup]="form">
     <ion-grid>       
         <ion-label>Valor</ion-label>            
       <ion-row >  
-        <ion-input  formControlName="valor" class="uk-input- uk-width-1-1 " type="number" placeholder="R$ 100,00">
+        <ion-input  formControlName="valor" class="uk-input- uk-width-1-1" type="text" placeholder="R$ 100,00"  [brmasker]="{money: true, thousand: '.',  decimalCaracter: ',', decimal: '2'} ">
         </ion-input>
       </ion-row>
       <ion-label>
@@ -23,40 +50,90 @@
         </ion-input>
       </ion-row>
 
-      <ion-label>   Data </ion-label>
+      <ion-label class="uk-label">   Data </ion-label>
       <ion-row class="uk-margin-small-bottom "> 
         <ion-item>
-          <ion-datetime [(ngModel)]="dataAtual" displayFormat="DD-MMM-YYYY" value="{{dataAtual}} " formControlName="data" (ionChange)="dateChanged($event)">{{dataAtual}}</ion-datetime>
+          <ion-datetime [(ngModel)]="dataAtual" display-format="DD-MMM-YYYY" value="" formControlName="data">{{dataAtual}}</ion-datetime>
       </ion-item>
       </ion-row>
 
-      <ion-label>
-        Categoria
-      </ion-label>
-      <ion-row  class="uk-margin-small-bottom">        
-        <ion-select    formControlName="categoriaId"  >
-          
-          <ion-select-option value="categoria.nome" class="uk-text-primary" *ngFor="let categoria of categorias$ | async" >{{categoria.nome}}</ion-select-option>
+      
+      <ion-row   *ngIf="tipoRegistro===2"> 
+       <ion-col>
+        <ion-label>
+          Categoria Receita
+        </ion-label>  
+      </ion-col>
+      <ion-col>     
+        <ion-select   formControlName="categoriaRecId" value="categoriaRec.nome" >
+          <ion-select-option  selected="categoria" >Selecione...</ion-select-option >
+          <ion-select-option    class="uk-text-primary" *ngFor="let categoriaRec of categoriasRec$ | async" >{{categoriaRec.nome}}</ion-select-option>
+        </ion-select>
+      </ion-col>
+      </ion-row> 
+      <ion-row  class="uk-margin-small-bottom" *ngIf="tipoRegistro===1">   
+        <ion-label>
+          Categoria
+        </ion-label>     
+        <ion-select   formControlName="categoriaId" value="categoria.nome" >
+          <ion-select-option  selected="categoria" >Selecione...</ion-select-option >
+          <ion-select-option    class="uk-text-primary" *ngFor="let categoria of categorias$ | async" >{{categoria.nome}}</ion-select-option>
         </ion-select>
       </ion-row> 
          
-      <ion-row class="uk-margin-small-bottom">
-          <ion-checkbox class="uk-margin-right" formControlName="tipoConta"></ion-checkbox> 
-          <label class="uk-margin-medium-left">Cartão de Crédito</label>        
+      <ion-radio-group *ngIf="tipoConta === 0" value="tipoConta" (ionChange)="onTipoConta($event)">
+        <ion-row>
+          <ion-col>
+        <ion-item>
+          <ion-label>Cartão de Crédito</ion-label>
+          <ion-radio slot="start" value="Cartao"></ion-radio>
+        </ion-item>
+        </ion-col>
+        <ion-col>
+        <ion-item>
+          <ion-label>Conta</ion-label>
+          <ion-radio slot="end" value="Conta"></ion-radio>
+        </ion-item>
+      </ion-col>
       </ion-row>
-      <ion-label>
-        Conta
-      </ion-label>
-      <ion-row  class="uk-margin-small-bottom">        
-        <ion-select  formControlName="contasId" class="custom-options" interface="popover">
-          <ion-select-option  value="conta" *ngFor="let conta of contas$ | async" >{{conta.nome}}</ion-select-option>
+      </ion-radio-group>
+      
+      <ion-row *ngIf="tipoConta===2" class="uk-margin-small-bottom">   
+        <ion-label>
+          Conta
+        </ion-label>     
+        <ion-select  formControlName="contaId" value="conta.nome" class="custom-options" interface="popover">
+          <ion-select-option   *ngFor="let conta of contas$ | async" >{{conta.nome}}</ion-select-option>
         </ion-select>
       </ion-row> 
+     
+      <ion-row  *ngIf="tipoConta===1 && tipoRegistro===1" class="uk-margin-small-bottom"> 
+        <ion-row>
+        <ion-label>
+          Cartão de Crédito
+        </ion-label>      
+      </ion-row>
+      <ion-row>
+        <ion-select  formControlName="cartaoId"  value="cartao.nome" class="custom-options" interface="popover">
+          <ion-select-option   *ngFor="let cartao of cartoes$ | async" >{{cartao.nome}}</ion-select-option>
+        </ion-select>
+      </ion-row>
+      </ion-row> 
+
+      <ion-row *ngIf="tipoConta===1">
+        <ion-label>
+          Número de Parcelas
+        </ion-label> 
+        <ion-select  formControlName="numParcelas"  value="parcela" class="custom-options" interface="popover">
+          <ion-select-option   *ngFor="let parcela of numParcelas" >{{parcela}}</ion-select-option>
+        </ion-select>
+      </ion-row>
     </ion-grid>
-    <ion-row class="uk-margin-small-top">
+
+    <ion-row class="uk-position-bottom">
       
-      <ion-button class="uk-margin-small-left" uk-button >Cancelar</ion-button>
-      <ion-button class="uk-margin-small-left" uk-button (click)="submit()" >Salvar</ion-button>
+      <ion-button class="uk-margin-xlarge-left uk-width-1-4 fin-button " uk-button (click)="cancel()">Cancelar</ion-button>
+      <ion-button class="uk-margin-large-left uk-width-1-4 fin-button " uk-button (click)="submit()" >Salvar</ion-button>
     </ion-row>
     
   </form>
